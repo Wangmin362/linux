@@ -280,9 +280,12 @@ int smpboot_register_percpu_thread(struct smp_hotplug_thread *plug_thread)
 	int ret = 0;
 
 	mutex_lock(&smpboot_threads_lock);
+	// 对于当前机器的每个在线CPU都创建一个softireqd线程
 	for_each_online_cpu(cpu) {
+		// 创建softirqd线程
 		ret = __smpboot_create_thread(plug_thread, cpu);
 		if (ret) {
+			// 如果sortirqd线程创建的有问题，那么直接销毁
 			smpboot_destroy_threads(plug_thread);
 			goto out;
 		}

@@ -6323,7 +6323,9 @@ static int __init net_dev_init(void)
 	if (register_pernet_device(&default_device_ops))
 		goto out;
 
+	// 注册NET_TX_SOFTIRQ中断处理函数
 	open_softirq(NET_TX_SOFTIRQ, net_tx_action);
+	// 注册NET_RX_SOFTIRQ中断处理函数
 	open_softirq(NET_RX_SOFTIRQ, net_rx_action);
 
 	hotcpu_notifier(dev_cpu_callback, 0);
